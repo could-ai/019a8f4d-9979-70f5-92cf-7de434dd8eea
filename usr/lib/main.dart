@@ -28,8 +28,52 @@ class MyApp extends StatelessWidget {
 class DeviceSelectionScreen extends StatelessWidget {
   const DeviceSelectionScreen({super.key});
 
+  // Method to show the brand selection dialog
+  void _showBrandSelectionDialog(
+      BuildContext context, String deviceName, List<String> brands) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select a $deviceName Brand'),
+          content: SizedBox(
+            width: double.minPositive,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: brands.length,
+              itemBuilder: (BuildContext context, int index) {
+                return ListTile(
+                  title: Text(brands[index]),
+                  onTap: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RemoteControlScreen(
+                          device: deviceName,
+                          brand: brands[index], // Pass the selected brand
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+          backgroundColor: Colors.grey[850],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Brand lists
+    const tvBrands = ['Samsung', 'LG', 'Sony', 'Panasonic'];
+    const acBrands = ['Daikin', 'LG', 'Carrier', 'Mitsubishi'];
+    const soundSystemBrands = ['Sony', 'Bose', 'JBL', 'Yamaha'];
+    const projectorBrands = ['Epson', 'BenQ', 'Optoma', 'ViewSonic'];
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Select a Device'),
@@ -46,33 +90,30 @@ class DeviceSelectionScreen extends StatelessWidget {
             deviceName: 'TV',
             icon: Icons.tv,
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RemoteControlScreen(device: 'TV'),
-                ),
-              );
+              _showBrandSelectionDialog(context, 'TV', tvBrands);
             },
           ),
           DeviceCard(
             deviceName: 'Air Conditioner',
             icon: Icons.ac_unit,
             onTap: () {
-              // Navigate to a different remote screen or pass different config
+              _showBrandSelectionDialog(
+                  context, 'Air Conditioner', acBrands);
             },
           ),
           DeviceCard(
             deviceName: 'Sound System',
             icon: Icons.speaker,
             onTap: () {
-              // Navigate to a different remote screen or pass different config
+              _showBrandSelectionDialog(
+                  context, 'Sound System', soundSystemBrands);
             },
           ),
           DeviceCard(
             deviceName: 'Projector',
             icon: Icons.videocam,
             onTap: () {
-              // Navigate to a different remote screen or pass different config
+              _showBrandSelectionDialog(context, 'Projector', projectorBrands);
             },
           ),
         ],

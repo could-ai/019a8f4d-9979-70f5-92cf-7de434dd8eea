@@ -3,14 +3,16 @@ import 'package:couldai_user_app/widgets/remote_button.dart';
 
 class RemoteControlScreen extends StatelessWidget {
   final String device;
+  final String brand;
 
-  const RemoteControlScreen({super.key, required this.device});
+  const RemoteControlScreen(
+      {super.key, required this.device, required this.brand});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('$device Remote'),
+        title: Text('$brand $device Remote'),
         backgroundColor: Colors.grey[900],
         elevation: 0,
       ),
